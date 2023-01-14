@@ -1,15 +1,12 @@
 import React from 'react';
 import './App.css';
+import Board from './components/Board';
 import Tile from './components/Tile';
 
 function App() {
   return (
     <>
-      <div className="grid-rows-5">
-        {
-          <Tile />
-        }
-      </div>
+      <Board />
     </>
   );
 }

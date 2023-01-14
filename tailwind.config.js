@@ -12,7 +12,7 @@ module.exports = {
           '0%': { transform: 'scale(1)' },
           '30%': { transform: 'scale(1.1)' },
           '60%': { transform: 'scale(1)' },
-          '80%': { transform: 'scale(1)' },
+          '70%': { transform: 'scale(1)' },
           '100%': { transform: 'scale(0)' },
         },
         zoomOut: {
