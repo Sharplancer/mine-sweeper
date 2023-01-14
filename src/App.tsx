@@ -1,12 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Tile from './components/Tile';
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline text-red-600">
-      Simple React Typescript Tailwind
-    </h1>
+    <>
+      <div className="grid-rows-5">
+        {
+          <Tile />
+        }
+      </div>
+    </>
   );
 }
 
