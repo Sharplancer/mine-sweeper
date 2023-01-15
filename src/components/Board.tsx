@@ -1,42 +1,40 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state';
-import { initTiles, setStatus } from '../state/slices/gameSlice';
+import { initTiles, setCurrentId, setGameOver, setTileStatus } from '../state/slices/gameSlice';
 import { STATUS } from '../utils/consts';
 import { ITile } from '../utils/interfaces';
 import Tile from './Tile';
 
 const Board: React.FC = () => {
   const dispatch = useDispatch();
-  const tiles = useSelector((state: RootState) => state.game.tiles);
-  const mines = useSelector((state: RootState) => state.game.mines);
-  const [currentId, setCurrentId] = useState<number>(0);
+  const { tiles, mines, currentId, isGameOver } = useSelector((state: RootState) => state.game);
 
   useEffect(() => {
     dispatch(initTiles());
   }, [dispatch]);
   
   const onClickTile = (id: number) => {
-    setTimeout(() => {
-      dispatch(setStatus({id, status: STATUS.CLICKED}));
-      setCurrentId(id);
-    }, 1000);
+    dispatch(setTileStatus({id, status: STATUS.CLICKED}));
+    dispatch(setCurrentId(id));
   }
 
   useEffect(() => {
     if (mines.includes(currentId)) {
-      tiles.map((tile) => {
-        if (tile.status === STATUS.DEFAULT) {
-          console.log(tile.id);
-          dispatch(setStatus({id: tile.id, status: STATUS.NON_CLICKED}));
-        }
-      });
+      setTimeout(() => {
+        tiles.map((tile) => {
+          if (tile.status === STATUS.DEFAULT) {
+            dispatch(setTileStatus({id: tile.id, status: STATUS.NON_CLICKED}));
+          }
+        });
+      }, 1000);
     }
-  }, [tiles, currentId])
+    dispatch(setGameOver());
+  }, [tiles, currentId]);
 
   return (
     <>
-      <div className="flex justify-center grid grid-rows-5 grid-flow-col gap-1">
+      <div className="flex justify-center grid grid-rows-5 grid-flow-col gap-2 py-12 bg-board-primary">
         {
           tiles.map((tile: ITile) => (
             <Tile

@@ -22,19 +22,21 @@ const Tile: React.FC<IProps> = (props) => {
     <>
       {
         {
-          [STATUS.DEFAULT]: <button type="button" className="bg-tile-primary hover:bg-tile-hover top-0 hover:translate-y-tile-hover focus:translate-y-0 rounded-lg shadow-tile hover:duration-200 focus:animate-tile-focus w-28 h-28 mb-1" onClick={onTileClick}></button>,
+          [STATUS.DEFAULT]: <button type="button" className="bg-tile-primary hover:bg-tile-hover top-0 hover:translate-y-tile-hover active:translate-y-0 rounded-lg shadow-tile hover:duration-200 select-none w-28 h-28 mb-2" onClick={onTileClick}></button>,
           [STATUS.CLICKED]: {
-            [TYPE.GEM]: <div className="flex justify-center items-center bg-title-secondary w-28 h-28 rounded-lg mb-1"><img className="w-20 h-20 animate-icon-appear" src={Gem}/></div>,
+            [TYPE.GEM]: <button className="flex justify-center items-center bg-title-secondary select-none w-28 h-28 rounded-lg animate-out-in mb-2">
+                <img className="w-20 h-20 animate-out active:scale-95" src={Gem}/>
+              </button>,
             [TYPE.MINE]: (
-              <div className="flex justify-center items-center bg-title-secondary w-28 h-28 rounded-lg mb-1">
-                <img className="absolute w-40 h-40 animate-icon-appear" src={Explosion}/>
-                <img className="absolute w-20 h-20 animate-icon-appear" src={Mine}/>
-              </div>),
+              <button className="flex justify-center items-center bg-title-secondary select-none w-28 h-28 active:children:scale-75 rounded-lg animate-out-in mb-2">
+                <img className="absolute w-40 h-40 animate-out active:scale-95" src={Explosion}/>
+                <img className="absolute w-20 h-20 animate-out active:scale-95" src={Mine}/>
+              </button>),
           } [type],
           [STATUS.NON_CLICKED]: (
-            <div className="flex justify-center items-center bg-title-secondary w-28 h-28 rounded-lg mb-1">
-              <img className="absolute w-14 h-14 animate-icon-appear opacity-50" src={type === TYPE.GEM ? Gem : Mine}/>
-            </div>),
+            <button className="flex justify-center items-center bg-title-secondary select-none w-28 h-28 rounded-lg mb-2">
+              <img className="absolute w-14 h-14 animate-fast-out opacity-50" src={type === TYPE.GEM ? Gem : Mine}/>
+            </button>),
         } [status]
       }
     </>
