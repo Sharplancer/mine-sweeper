@@ -7,7 +7,8 @@ module.exports = {
         'out-in': 'zoomOutIn 0.85s ease-in-out',
         'out': 'zoomOut 1s ease-in-out',
         'fast-out': 'fastZoomOut 0.15s ease-in-out',
-        'rotate-out': 'rotateOut 1s ease-in-out'
+        'rotate-out': 'rotateOut 1s ease-in-out infinite',
+        'appear': 'appear 0.15s ease-in-out'
       },
       keyframes: {
         zoomOutIn: {
@@ -58,24 +59,29 @@ module.exports = {
         },
         rotateOut: {
           '0%': {
-            transform: 'rotate(0deg)'
+            transform: 'rotate(0deg)',
           },
           '20%': {
-            transform: 'rotate(-15deg)'
+            transform: 'rotate(-90deg)',
           },
           '40%': {
-            transform: 'rotate(0deg)'
+            transform: 'rotate(0deg)',
           },
           '60%': {
-            transform: 'scale(0.95)'
+            transform: 'scale(0.5)',
           },
           '80%': {
-            transform: 'scale(1)'
+            transform: 'scale(1)',
+          }
+        },
+        appear: {
+          '0%': {
+            opacity: 0,
           },
           '100%': {
-            transform: 'scale(1)'
-          },
-        },
+            opacity: 1,
+          }
+        }
       },
       colors: {
         'board-primary': '#0f212e',
@@ -87,6 +93,7 @@ module.exports = {
         'button-primary': '#00e701',
         'button-grey-hover': '#3d5564',
         'button-green-hover': '#1fff20',
+        'button-green-disabled': '#00e701',
         'button-secondary': '#013e01',
         'input-border': '#557086',
       },

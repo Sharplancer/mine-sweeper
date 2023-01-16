@@ -1,21 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state';
-import { initTiles, setCurrentId, setMinesCount, setTileStatus } from '../state/slices/gameSlice';
+import { initTiles, setCashOut, setCurrentId, setMinesCount, setTileStatus, setTotalProfit } from '../state/slices/gameSlice';
 import { STATUS } from '../utils/consts';
-import BombIcon from '../assets/bomb.png';
-import DiamondIcon from '../assets/diamond.png';
-import UsdIcon from '../assets/usd.png';
 import { ITile } from '../utils/interfaces';
 import Tile from './Tile';
 import { randomIndex } from '../utils/formulas';
+import { BombIcon, DiamondIcon, UsdIcon } from '../utils/icons';
 
 const usdToBtcRate = 0.000048;
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();
-  const { tiles, tilesCount, isGameOver } = useSelector((state: RootState) => state.game);
-  const [amount, setAmount] = useState<any>(0);
+  const { tiles, tilesCount, isGameOver, currentId, gemsCount, totalProfit } = useSelector((state: RootState) => state.game);
+  const [amount, setAmount] = useState<any>("0.00");
   const [mineCount, setMineCount] = useState<number>(3);
   const [isBeted, setBeted] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -43,15 +41,17 @@ const Settings: React.FC = () => {
   }
 
   const onBlurAmount = () => {
-    setAmount(amount.toFixed(2));
+    setAmount(Number(amount).toFixed(2));
   }
 
   const halfAmount = () => {
-    setAmount(amount as number / 2);
+    const factor = Math.pow(10, 2);
+    setAmount((Math.floor(amount / 2 * factor) / factor).toFixed(2));
   }
 
   const doubleAmount = () => {
-    setAmount(amount as number * 2);
+    const factor = Math.pow(10, 2);
+    setAmount((Math.floor(amount * 2 * factor) / factor).toFixed(2));
   }
 
   const onChangeMinesCount = (e: any) => {
@@ -77,20 +77,24 @@ const Settings: React.FC = () => {
   }
 
   const cashout = () => {
+    setLoading(true);
     setTimeout(() => {
       tiles.map((tile) => {
         if (tile.status === STATUS.DEFAULT) {
           dispatch(setTileStatus({id: tile.id, status: STATUS.NON_CLICKED}));
         }
       });
+      dispatch(setTotalProfit(amount * (gemsCount / tilesCount)));
+      dispatch(setCashOut());
+      setLoading(false);
     }, 1000);
   }
   return (
     <>
-      <div className="p-3 bg-board-secondary">
+      <div className="p-3 bg-board-secondary w-96">
         <div className="flex justify-between items-end">
           <label className="block text-sm font-medium text-font-primary mb-1">Bet Amount</label>
-          <label className="block text-xs font-medium text-font-primary mb-1">BTC {amount * usdToBtcRate}</label>
+          <label className="block text-xs font-medium text-font-primary mb-1">BTC {(amount * usdToBtcRate).toFixed(8)}</label>
         </div>
         <div className="flex mb-3">
           <div className="relative w-full">
@@ -186,15 +190,15 @@ const Settings: React.FC = () => {
               </div>
             </div>
             <div className="flex justify-between items-end">
-              <label className="block text-sm font-medium text-font-primary mb-1">Total profit (1.00×)</label>
-              <label className="block text-xs font-medium text-font-primary mb-1">$ {amount * usdToBtcRate}</label>
+              <label className="block text-sm font-medium text-font-primary mb-1">Total profit ({gemsCount / tilesCount}×)</label>
+              <label className="block text-xs font-medium text-font-primary mb-1">BTC {(amount * (gemsCount / tilesCount) * usdToBtcRate).toFixed(8)}</label>
             </div>
             <div className="relative mb-3">
               <input
                 type="text"
                 className="bg-board-primary text-font-primary text-sm font-medium outline-none rounded border-2 border-tile-primary shadow-input read-only:bg-tile-primary hover:ring-input-border hover:border-input-border focus:ring-input-border focus:border-input-border duration-200 block w-full p-2.5"
                 readOnly
-                value={amount * (mineCount / tilesCount)}
+                value={(amount * (gemsCount / tilesCount)).toFixed(2)}
               />
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <img className="w-4 h-4" src={UsdIcon} />
@@ -213,14 +217,17 @@ const Settings: React.FC = () => {
             </button>
             <button
               className={
-                !isLoading ?
-                "bg-button-primary hover:bg-button-green-hover text-button-secondary text-sm active:text-xs font-medium rounded shadow-input duration-200 w-full h-14 p-2.5" : 
-                "bg-button-primary text-button-secondary text-sm font-medium rounded shadow-input duration-200 w-full h-14 p-2.5"
+                !isLoading ? (
+                  currentId === -1 ?
+                  "bg-button-green-disabled text-button-secondary text-sm font-medium rounded shadow-input cursor-not-allowed opacity-50 w-full h-14 p-2.5" :
+                  "bg-button-primary hover:bg-button-green-hover text-button-secondary text-sm active:text-xs font-medium rounded shadow-input duration-200 w-full h-14 p-2.5" 
+                ) :
+                "flex justify-center items-center bg-button-primary text-button-secondary text-sm font-medium rounded shadow-input opacity-50 w-full h-14 p-2.5"
               }
-              disabled={isLoading}
+              disabled={isLoading || currentId === -1}
               onClick={cashout}
             >
-              {isLoading ? <img className="w-5 h-5 animation-rotate-out" src={BombIcon} /> : "Cashout"}
+              {isLoading ? <img className="w-5 h-5 animate-rotate-out" src={BombIcon} /> : "Cashout"}
             </button>
           </>
         }

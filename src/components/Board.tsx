@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state';
 import { initTiles, setCurrentId, setGameOver, setTileStatus } from '../state/slices/gameSlice';
 import { STATUS } from '../utils/consts';
+import { UsdIcon } from '../utils/icons';
 import { ITile } from '../utils/interfaces';
 import Tile from './Tile';
 
 const Board: React.FC = () => {
   const dispatch = useDispatch();
-  const { tiles, mines, currentId, isGameOver } = useSelector((state: RootState) => state.game);
+  const { tiles, mines, currentId, gemsCount, tilesCount, isGameOver, totalProfit, cashOut } = useSelector((state: RootState) => state.game);
 
   useEffect(() => {
     dispatch(initTiles());
@@ -33,8 +34,8 @@ const Board: React.FC = () => {
   }, [tiles, currentId]);
 
   return (
-    <>
-      <div className="flex justify-center grid grid-rows-5 grid-flow-col gap-2 py-12 bg-board-primary">
+    <div className="flex justify-center items-center bg-board-primary w-full h-full">
+      <div className="flex justify-center grid grid-rows-5 grid-flow-col gap-2 w-full">
         {
           tiles.map((tile: ITile) => (
             <Tile
@@ -47,7 +48,19 @@ const Board: React.FC = () => {
           ))
         }
       </div>
-    </>
+      {
+        cashOut && (
+          <div className="absolute flex justify-center items-center flex-col bg-board-secondary border-[3px] border-button-primary rounded-md animate-appear select-none pt-3.5 pb-3.5 pl-8 pr-8">
+            <span className="text-button-primary text-2xl font-medium">{(gemsCount / tilesCount).toFixed(2)}×</span>
+            <div className="bg-tile-primary w-1/2 h-[3px] mt-2 mb-2" />
+            <div className="flex justify-center items-center">
+              <span className="text-button-primary text-sm font-medium mr-1">{totalProfit.toFixed(2)}</span>
+              <img className="w-4 h-4" src={UsdIcon} />
+            </div>
+          </div>
+        )
+      }
+    </div>
   )
 }
 
