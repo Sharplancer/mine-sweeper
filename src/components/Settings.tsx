@@ -91,7 +91,7 @@ const Settings: React.FC = () => {
   }
   return (
     <>
-      <div className="p-3 bg-board-secondary w-96">
+      <div className="p-3 bg-board-secondary w-full h-full md:w-96">
         <div className="flex justify-between items-end">
           <label className="block text-sm font-medium text-font-primary mb-1">Bet Amount</label>
           <label className="block text-xs font-medium text-font-primary mb-1">BTC {(amount * usdToBtcRate).toFixed(8)}</label>

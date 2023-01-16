@@ -7,7 +7,7 @@ import Tile from './components/Tile';
 function App() {
   return (
     <>
-      <div className="flex w-full h-screen rounded-lg">
+      <div className="flex flex-col flex-col-reverse justify-end md:flex-row w-full h-screen rounded-lg">
         <Settings />
         <Board />
       </div>

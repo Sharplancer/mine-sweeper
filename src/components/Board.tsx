@@ -36,7 +36,7 @@ const Board: React.FC = () => {
   }, [tiles, currentId]);
 
   return (
-    <div className="flex justify-center items-center bg-board-primary w-full h-full">
+    <div className="flex justify-center items-center bg-board-primary p-2 md:w-full md:h-full">
       <div className="flex justify-center grid grid-rows-5 grid-flow-col gap-2 w-full">
         {
           tiles.map((tile: ITile) => (
