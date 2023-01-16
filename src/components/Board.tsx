@@ -9,16 +9,23 @@ import Tile from './Tile';
 
 const Board: React.FC = () => {
   const dispatch = useDispatch();
-  const { tiles, mines, currentId, gemsCount, tilesCount, isGameOver, totalProfit, cashOut } = useSelector((state: RootState) => state.game);
+  const { tiles, mines, currentId, gemsCount, tilesCount, totalProfit, cashOut, isStarted } = useSelector((state: RootState) => state.game);
 
   useEffect(() => {
     dispatch(initTiles());
   }, [dispatch]);
   
   const onClickTile = (id: number) => {
-    dispatch(setTileStatus({id, status: STATUS.CLICKED}));
-    dispatch(setCurrentId(id));
+    console.log(isStarted);
+    if (isStarted) {
+      dispatch(setTileStatus({id, status: STATUS.CLICKED}));
+      dispatch(setCurrentId(id));
+    }
   }
+
+  useEffect(() => {
+    console.log(isStarted);
+  }, [isStarted]);
 
   useEffect(() => {
     if (mines.includes(currentId)) {

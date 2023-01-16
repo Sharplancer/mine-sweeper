@@ -16,6 +16,7 @@ const gameSlice = createSlice({
     gemsCount: 0,
     totalProfit: 0,
     cashOut: false,
+    isStarted: false,
   },
   reducers: {
     initTiles(state) {
@@ -24,6 +25,7 @@ const gameSlice = createSlice({
       state.gemsCount = 0;
       state.isGameOver = false;
       state.cashOut = false;
+      state.isStarted = false;
       state.tiles = [];
       for (let i = 0; i < state.tilesCount; i++) {
         state.tiles.push({
@@ -53,6 +55,7 @@ const gameSlice = createSlice({
       state.isGameOver = false;
       state.gemsCount = 0;
       state.cashOut = false;
+      state.isStarted = true;
       state.minesCount = action.payload;
       state.tiles = [];
       for (let i = 0; i < state.tilesCount; i++) {
@@ -81,6 +84,8 @@ const gameSlice = createSlice({
     setGameOver(state) {
       state.isGameOver = state.tiles.every(el => el.status != STATUS.DEFAULT);
       state.gemsCount = state.tiles.filter(el => el.status === STATUS.CLICKED && el.type === TYPE.GEM).length;
+      if (state.isGameOver)
+        state.isStarted = false;
     },
 
     setTotalProfit(state, action) {
@@ -89,7 +94,8 @@ const gameSlice = createSlice({
 
     setCashOut(state) {
       state.cashOut = true;
-    }
+      state.isStarted = false;
+    },
   }
 })
 
