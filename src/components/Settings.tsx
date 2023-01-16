@@ -30,7 +30,7 @@ const Settings: React.FC = () => {
 
   useEffect(() => {
     if (isGameOver === true) {
-      setAmount(0);
+      setAmount("0.00");
       setMineCount(3);
       setBeted(false);
     }
