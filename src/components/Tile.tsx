@@ -22,7 +22,7 @@ const Tile: React.FC<IProps> = (props) => {
     <>
       {
         {
-          [STATUS.DEFAULT]: <button type="button" className="bg-tile-primary hover:bg-tile-hover top-0 hover:translate-y-tile-hover active:translate-y-0 rounded-lg shadow-tile hover:duration-200 select-none animate-out w-28 h-28 mb-2" onClick={onTileClick}></button>,
+          [STATUS.DEFAULT]: <button type="button" className="bg-tile-primary hover:bg-tile-hover top-0 hover:translate-y-tile-hover active:translate-y-0 rounded-lg shadow-tile hover:duration-200 select-none animate-fast-out w-28 h-28 mb-2" onClick={onTileClick}></button>,
           [STATUS.CLICKED]: {
             [TYPE.GEM]: <button className="flex justify-center items-center bg-title-secondary select-none w-28 h-28 rounded-lg animate-out-in mb-2">
                 <img className="w-20 h-20 animate-out active:scale-95" src={Gem}/>
