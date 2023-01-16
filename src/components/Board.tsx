@@ -16,16 +16,11 @@ const Board: React.FC = () => {
   }, [dispatch]);
   
   const onClickTile = (id: number) => {
-    console.log(isStarted);
     if (isStarted) {
       dispatch(setTileStatus({id, status: STATUS.CLICKED}));
       dispatch(setCurrentId(id));
     }
   }
-
-  useEffect(() => {
-    console.log(isStarted);
-  }, [isStarted]);
 
   useEffect(() => {
     if (mines.includes(currentId)) {
